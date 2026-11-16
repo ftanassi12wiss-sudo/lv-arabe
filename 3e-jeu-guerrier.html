@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>المدرسة العتيقة: المحارب - لعبة المعجم</title>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0b110e;--panel:#16201a;--line:#2c3d33;--tx:#e8efe9;--mut:#8fa396;--acc:#f2a900;--ok:#3ddc84;--bad:#ff5252}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}html{height:100%}
+body{margin:0;min-height:100%;background:radial-gradient(circle at 50% 0,#1f3326,var(--bg) 62%);color:var(--tx);font-family:'Tajawal',Arial,sans-serif;padding:calc(10px + env(safe-area-inset-top,0)) 10px calc(10px + env(safe-area-inset-bottom,0))}
+.wrap{max-width:720px;margin:0 auto}.screen{display:none}.screen.on{display:block}
+h1{font-size:28px;margin:6px 0 10px;color:var(--acc);text-align:center;text-shadow:0 2px 12px #f2a90055}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px;margin-bottom:12px}
+.fr{direction:ltr;text-align:left;line-height:1.65;font-size:15px}.fr li{margin-bottom:3px}
+.hud{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:6px}
+.hud div{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:4px;text-align:center;font-weight:900;font-size:16px}
+.hud small{display:block;color:var(--mut);font-weight:400;font-size:11px}
+.bar{height:9px;background:#070b09;border:1px solid var(--line);border-radius:8px;overflow:hidden;margin-bottom:6px}.bar i{display:block;height:100%;width:100%;background:linear-gradient(90deg,#f2a900,#ffd24a)}
+.mis{background:linear-gradient(135deg,#1f3326,#16201a);border:1px solid var(--line);border-radius:12px;padding:8px 12px;margin-bottom:6px;text-align:center}
+.cat{display:inline-block;background:#2a2410;color:var(--acc);border-radius:20px;padding:1px 12px;font-size:13px;font-weight:700}.q{font-size:21px;font-weight:900;margin:4px 0 0;line-height:1.5}
+.stage{position:relative;height:430px;border:1px solid var(--line);border-radius:14px;overflow:hidden;background:linear-gradient(#142a2f 0,#1b3a35 45%,#2b4a2a 78%,#3a3a22 100%);touch-action:none;user-select:none}
+.stage::after{content:"";position:absolute;left:0;right:0;bottom:0;height:42px;background:repeating-linear-gradient(90deg,#4a4630 0 24px,#413d2a 24px 48px);border-top:3px solid #5d573a}
+.tgs{position:absolute;inset:0 0 auto 0;height:290px}
+.tg{position:absolute;left:0;top:0;min-width:104px;max-width:200px;height:54px;line-height:1.15;display:flex;align-items:center;justify-content:center;text-align:center;border:3px solid #7fb08a;border-radius:30px;background:radial-gradient(circle at 30% 25%,#2f4a39,#16261c);color:var(--tx);font:900 18px 'Tajawal',Arial,sans-serif;cursor:crosshair;padding:4px 14px;box-shadow:0 0 14px #3ddc8433;will-change:transform}
+.tg.ok{border-color:var(--ok);background:#12311f}.tg.no{border-color:var(--bad);background:#341516}.tg.gone{visibility:hidden}.tg:disabled{cursor:default}
+#wr{position:absolute;bottom:34px;left:0;z-index:2}#wr.walk{animation:wk .3s infinite}@keyframes wk{50%{transform:translateY(-4px)}}
+.bul{position:absolute;width:9px;height:9px;border-radius:50%;background:#ffe27a;box-shadow:0 0 10px #ffb400,0 0 3px #fff;z-index:3;display:none}
+.crate{position:absolute;bottom:38px;font-size:34px;z-index:1;animation:bb 1s ease-in-out infinite}@keyframes bb{50%{transform:translateY(-6px)}}
+.ctrl{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px}
+.btn{display:block;width:100%;border:none;border-radius:12px;padding:12px;font:900 17px 'Tajawal',Arial,sans-serif;background:var(--acc);color:#1a1300;cursor:pointer;margin-top:8px}
+.btn.g{background:var(--ok);color:#06210f}.btn.s{background:#26382c;color:var(--tx);margin:0;font-size:15px}.btn.mv{background:#1f3326;color:var(--tx);border:2px solid var(--line);font-size:26px;padding:10px;touch-action:none;user-select:none;margin:0}
+.btn[disabled]{opacity:.4;cursor:not-allowed}.tools{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px}
+.fb{display:none;margin-top:8px;padding:12px;border-radius:10px;line-height:1.7}.fb.ok{display:block;background:#12311f;border:1px solid var(--ok)}.fb.no{display:block;background:#341516;border:1px solid var(--bad)}
+.fact{margin-top:6px;padding:8px 10px;background:#0b110e;border-right:4px solid var(--acc);border-radius:8px;font-size:15px}
+.feed{min-height:20px;color:var(--mut);font-size:14px;text-align:center;margin-top:4px}
+input[type=text],textarea{width:100%;padding:12px;border:2px solid var(--line);border-radius:10px;background:#0f1712;color:var(--tx);font:17px 'Tajawal',Arial,sans-serif}
+.res{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:10px 0}.res div{background:#0f1712;border:1px solid var(--line);border-radius:10px;padding:10px;text-align:center;font-weight:900;font-size:20px}.res small{display:block;color:var(--mut);font-size:13px;font-weight:400}
+.learn li{margin-bottom:6px;line-height:1.6}
+</style></head><body><div class="wrap">
+
+<div id="s0" class="screen on"><h1>🎖️ المدرسة العتيقة: المحارب</h1>
+<div class="card fr" lang="fr"><b>Mission :</b> ton guerrier doit toucher la bonne réponse parmi des cibles en mouvement.
+<ol style="margin:8px 0;padding-left:20px">
+<li><b>Déplace-toi</b> avec les boutons ◀ ▶ (ou les flèches ← → / A D du clavier).</li>
+<li><b>Touche ou clique la cible</b> qui contient la bonne réponse : le guerrier tire. Les cibles bougent et accélèrent à chaque manche.</li>
+<li>Le thème : <b>le vocabulaire</b> (synonymes, contraires, traduction, mots de l’école d’autrefois, pluriels, intrus). Après chaque réponse, une fiche <b>« Le saviez-vous ? »</b> te donne une information culturelle sur l’école classique, Taha Hussein et le monde arabe.</li>
+<li>Tu as <b>45 secondes</b> par question. <b>5 erreurs consécutives</b> (ou temps écoulé) = éliminé ; une bonne réponse remet le compteur à zéro.</li>
+<li><b>Crédits 💰 :</b> +20 par bonne réponse. Va ramasser le <b>coffre 🎁</b> posé au sol : +50 crédits et +10 s.</li>
+<li>Dépense tes crédits : <b>💡 Indice</b> (−40) retire deux mauvaises cibles ; <b>⏳ +15 s</b> (−30).</li>
+<li><b>Score :</b> 100 points par bonne réponse + bonus de rapidité.</li></ol></div>
+<div class="card"><label for="nm" style="color:var(--mut)">اسم المحارب(ة)</label><input id="nm" type="text" maxlength="30" placeholder="اكتب اسمك هنا">
+<button class="btn" onclick="start()">🎯 ابدأ المهمّة</button><p id="best" style="text-align:center;color:var(--mut);margin:8px 0 0"></p></div></div>
+
+<div id="s1" class="screen">
+<div class="hud"><div><small>⭐ النقاط</small><span id="sc">0</span></div><div><small>💰 الرصيد</small><span id="cr">50</span></div><div><small>الصحّة</small><span id="hr">❤️❤️❤️❤️❤️</span></div><div><small>🎯 الجولة</small><span id="rd">1</span></div></div>
+<div class="bar"><i id="tm"></i></div>
+<div class="mis"><span class="cat" id="cat"></span><p class="q" id="qt"></p></div>
+<div class="stage" id="st"><div class="tgs" id="tg"></div><div class="bul" id="bl"></div>
+<svg id="wr" viewBox="0 0 130 130" width="104" height="104" aria-hidden="true"><ellipse cx="65" cy="126" rx="34" ry="5" fill="#0006"/><circle cx="65" cy="40" r="14" fill="#f1c27d"/><path d="M49 38a16 16 0 0132 0z" fill="#3b5d3a"/><rect x="48" y="56" width="34" height="48" rx="8" fill="#4a6b3f"/><rect x="48" y="100" width="14" height="26" fill="#2f4a2b"/><rect x="68" y="100" width="14" height="26" fill="#2f4a2b"/><g id="gun"><rect x="62" y="6" width="6" height="66" fill="#222"/><rect x="57" y="62" width="16" height="24" rx="3" fill="#555"/></g></svg></div>
+<div class="feed" id="feed"></div>
+<div class="ctrl"><button class="btn mv" id="bl_" aria-label="يسار">◀</button><button class="btn mv" id="br_" aria-label="يمين">▶</button></div>
+<div class="tools"><button class="btn s" id="hint" onclick="hint()">💡 Indice (−40)</button><button class="btn s" id="tpl" onclick="addT()">⏳ +15 s (−30)</button></div>
+<div class="fb" id="fb"></div><button class="btn g" id="nx" style="display:none" onclick="next()">التالي ➡️</button></div>
+
+<div id="s2" class="screen"><div class="card"><div style="font-size:54px;text-align:center" id="ic"></div><h1 id="ti" style="font-size:24px"></h1>
+<div class="res"><div><small>النقاط</small><span id="rs"></span></div><div><small>الرصيد</small><span id="rc2"></span></div><div><small>إجابات صحيحة</small><span id="ro"></span></div><div><small>أقصى سلسلة</small><span id="rm"></span></div></div>
+<textarea id="sm" rows="3" readonly aria-label="ملخّص النتيجة"></textarea>
+<button class="btn g" onclick="cp()">📋 نسخ النتيجة لإرسالها إلى الأستاذ(ة)</button><button class="btn" onclick="start()">🔁 مهمّة جديدة</button><p id="cpm" style="text-align:center;color:var(--mut)"></p></div>
+<div class="card"><b>📚 ما تعلّمتَه في هذه المهمّة</b><ul class="learn" id="lf"></ul></div></div>
+</div>
+<script>
+var P=[
+['المعجم · ضدّ','ما ضدّ «وفد»؟','عاد','قدم','جاء','حضر','وفد: قدم وجاء، وضدّه عاد ورجع.','تأسّس الأزهر في القاهرة نحو سنة 970م، وهو من أقدم الجامعات في العالم.'],
+['المعجم · ضدّ','ما ضدّ «تقليدي»؟','تجديدي','عتيق','موروث','قديم','التقليدي: ما جرى عليه الأوّلون، وضدّه التجديدي.','لُقّب طه حسين بـ«عميد الأدب العربي» لدوره في تجديد الفكر والأدب.'],
+['المعجم · ضدّ','ما ضدّ «طرق حديثة»؟','طرق تقليديّة','طرق متطوّرة','طرق جديدة','طرق عصريّة','الحديث ضدّه التقليدي.','يُحتفل باليوم العالمي للمعلّم في 5 أكتوبر من كلّ سنة.'],
+['المعجم · ضدّ','ما ضدّ «تجديد»؟','جمود','تحديث','ابتكار','إصلاح','التجديد: جعل الشيء جديدا، وضدّه الجمود.','يوافق اليوم الدولي للتعليم 24 يناير من كلّ سنة.'],
+['المعجم · ترجمة','«Apprendre par cœur» تعني بالعربيّة:','حفظ','فهم','نسي','كتب','حَفِظَ الدرس: ثبّته في ذاكرته عن ظهر قلب.','كان تلميذ الكتّاب يحفظ القرآن الكريم قبل تعلّم بقيّة العلوم.'],
+['المعجم · ترجمة','«Les ancêtres» تعني بالعربيّة:','أسلاف','أتراب','شيوخ','طلّاب','الأسلاف: الآباء والأجداد = les ancêtres.','جامع الزيتونة بتونس من أقدم المعاهد العلميّة في العالم الإسلامي، تأسّس في القرن 8م.'],
+['المعجم · ترجمة','«Membre» تعني بالعربيّة:','عضو','رئيس','موظّف','زميل','العضو: فرد ينتمي إلى هيئة = un membre.','ترأّس طه حسين مجمع اللغة العربيّة بالقاهرة.'],
+['المعجم · ترجمة','«L’ophtalmie» تعني بالعربيّة:','الرمد','الصداع','الحمّى','الزكام','الرمد: التهاب في العين = l’ophtalmie.','أصيب طه حسين بالرمد في الثانية من عمره ففقد بصره.'],
+['المعجم · ترجمة','«Blâmer» تعني بالعربيّة:','آخذ','كافأ','شكر','ساند','آخذه على الأمر: لامه عليه = blâmer.','نال طه حسين الدكتوراه من الجامعة المصريّة سنة 1914 ثمّ تابع دراسته في فرنسا.'],
+['المعجم · ترجمة','«Accusations» تعني بالعربيّة:','اتهامات','تهاني','وعود','نصائح','الاتهام: نسبة ذنب إلى شخص = l’accusation.','أثار كتاب «في الشعر الجاهلي» (1926) جدلا واسعا واتهامات ضدّ طه حسين.'],
+['المعجم · ترجمة','«Camarades» تعني بالعربيّة:','أتراب','أعداء','شيوخ','أجداد','الأتراب: الأقران المتقاربون في السنّ = les camarades.','نُشر الجزء الأوّل من «الأيّام» سنة 1929 وتُرجم إلى لغات عديدة.'],
+['المعجم · ترجمة','«Modernisation» تعني بالعربيّة:','تحديث','تقليد','جمود','انغلاق','التحديث (أو التجديد) = la modernisation.','شغل طه حسين منصب وزير المعارف في مصر بين 1950 و1952.'],
+['المعجم · معنى','ما معنى «الكتّاب»؟','مكان يتعلّم فيه الصبيان القرآن والكتابة','مصنع للورق','سوق للكتب','مكتبة جامعيّة','الكتّاب: أوّل مدرسة تقليديّة للأطفال.','كانت الكتاتيب أوّل مدرسة يدخلها الطفل قبل ظهور المدارس الحديثة.'],
+['المعجم · معنى','ما معنى «اللّوح»؟','لوح خشبيّ يُكتب عليه ثمّ يُمحى','كتاب مطبوع','سبّورة إلكترونيّة','دفتر','اللّوح: صفيحة خشبيّة يكتب عليها التلميذ.','كان التلميذ يكتب على اللوح ثمّ يغسله ليكتب غيره.'],
+['المعجم · معنى','ما معنى «الحبر»؟','سائل يُكتب به','قلم','ورق','ممحاة','الحبر: سائل ملوّن للكتابة.','كان الحبر يُصنع قديما من السناج والصمغ العربي.'],
+['المعجم · معنى','ما معنى «الحصير»؟','فراش من الحلفاء يُجلس عليه','وسادة','ستار','غطاء الكتاب','الحصير: نسيج من الحلفاء أو القشّ يُفرش على الأرض.','يُصنع حصير الحلفاء في تونس بأيدي الحرفيّين ويُعدّ من التراث الحرفي.'],
+['المعجم · معنى','ما معنى «القنديل»؟','مصباح يُضاء بالزيت','نافذة','باب','ساعة','القنديل: مصباح قديم يعمل بالزيت.','كانت قناديل الزيت تضيء الكتاتيب والمساجد قبل الكهرباء.'],
+['المعجم · معنى','ما معنى «التلقين»؟','إلقاء المعلومة ليحفظها المتعلّم ويردّدها','الحوار والنقاش','التجريب','الرسم','التلقين: تعليم قائم على الإلقاء والتكرار.','من أهداف المدرسة الحديثة الانتقال من التلقين إلى تنمية التفكير النقدي.'],
+['المعجم · معنى','من هو «الشيخ» في الكتّاب؟','المعلّم','الطالب','الحارس','الطبيب','الشيخ: معلّم الكتّاب.','كان يُسمّى معلّم الكتّاب «سيّدنا» أو «المؤدّب».'],
+['المعجم · معنى','ما معنى «طعام غليظ»؟','طعام خشن بسيط','طعام لذيذ','طعام ساخن','طعام بارد','الغليظ: الخشن غير الرقيق.','كان طلّاب الأزهر يقيمون في «الأروقة» بجوار الجامع ويعيشون بالقليل.'],
+['المعجم · مرادف','ما مرادف «مُطَّرِدَة»؟','رتيبة متشابهة','متغيّرة','مفاجئة','ممتعة','المطّردة: المتتابعة على نسق واحد.','كلمة «رتابة» تدلّ على تكرار النمط دون جديد.'],
+['المعجم · مرادف','ما مرادف «يختلف إلى»؟','يتردّد على','يبتعد عن','يخاصم','يهرب من','اختلف إلى المكان: تردّد عليه.','كان الطلّاب قديما يختلفون إلى حلقات العلم في المساجد.'],
+['المعجم · مرادف','ما مرادف «لا يُسيغه»؟','لا يقبله','لا يعرفه','لا يراه','لا يحمله','ساغ الشراب: سهل ابتلاعه، ثمّ استُعمل مجازا للقبول.','يُقال «لا يسوغ» بمعنى لا يجوز ولا يُقبل.'],
+['المعجم · صرف','ما جمع «كتّاب» (مكان التعليم)؟','كتاتيب','كتب','كاتبون','كتّابات','كتّاب ← كتاتيب (جمع تكسير).','الكتاتيب منتشرة في العالم الإسلامي منذ قرون.'],
+['المعجم · صرف','ما جمع «لوح»؟','ألواح','لوحون','لوائح','لواح','لوح ← ألواح.','ظهرت الألواح الرقميّة في المدارس منذ بداية القرن 21.'],
+['المعجم · صرف','ما مفرد «أسلاف»؟','سلف','سلفة','سالف','سليف','أسلاف ← سلف.','يقال «السلف الصالح» للأوائل من العلماء.'],
+['المعجم · الكلمة الشاذّة','أيّ كلمة لا تنتمي إلى أدوات الكتّاب القديم؟','حاسوب','لوح','حبر','قنديل','الحاسوب أداة حديثة.','دخلت الرقمنة إلى التعليم الحديث مع الحواسيب والألواح الرقميّة.'],
+['المعجم · الكلمة الشاذّة','أيّ كلمة تخالف الباقي؟','إبداع','حفظ','تلقين','تكرار','الإبداع من سمات التعليم الحديث.','تدعو المدرسة الحديثة إلى الإبداع والتفكير الحرّ.']];
+var S,T0=45000,LT=0,$=function(i){return document.getElementById(i)};
+function sh(a){a=a.slice();for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1)),t=a[i];a[i]=a[j];a[j]=t}return a}
+function scr(n){[0,1,2].forEach(function(i){$('s'+i).classList.toggle('on',i==n)})}
+function bestShow(){try{var b=localStorage.getItem('rw3');if(b)$('best').textContent='🏅 أفضل نتيجة على هذا الجهاز: '+b}catch(e){}}
+function start(){S={n:$('nm').value.trim()||'محارب مجهول',o:sh(P).slice(0,15),i:0,sc:0,cr:50,wr:0,ok:0,mx:0,run:0,lock:false,ext:0,dead:false,dir:0,px:0,tg:[],bul:null,crate:null,facts:[]};scr(1);load()}
+function hud(){$('sc').textContent=S.sc;$('cr').textContent=S.cr;$('hr').textContent='❤️'.repeat(5-S.wr)+'🖤'.repeat(S.wr);$('rd').textContent=(S.i+1)+'/'+S.o.length;
+var b=S.lock||S.bul;$('hint').disabled=b||S.cr<40;$('tpl').disabled=b||S.cr<30}
+function load(){var q=S.o[S.i],st=$('st'),W=st.clientWidth;S.lock=false;S.bul=null;S.ext=0;S.t0=Date.now();if(!S.px)S.px=W/2;$('cat').textContent=q[0];$('qt').textContent=q[1];$('fb').className='fb';$('nx').style.display='none';$('feed').textContent='';$('bl').style.display='none';
+var tg=$('tg');tg.innerHTML='';if(S.crate&&S.crate.el)S.crate.el.remove();S.crate=null;
+var lanes=sh([0,1,2,3]),sp=45+S.i*7;
+S.tg=sh([0,1,2,3]).map(function(i,k){var o={t:q[2+i],c:i==0},b=document.createElement('button');b.type='button';b.className='tg';b.textContent=o.t;if(o.t.length>14)b.style.fontSize='14px';if(/[A-Za-z]/.test(o.t)){b.dir='ltr';b.lang='fr'}
+tg.appendChild(b);o.el=b;o.w=b.offsetWidth;o.h=b.offsetHeight;o.y=8+lanes[k]*68;o.x=Math.random()*Math.max(1,W-o.w);o.vx=(Math.random()<.5?-1:1)*(sp+Math.random()*40);b.onclick=function(){shoot(o)};return o});
+if(Math.random()<.4){var c=document.createElement('div');c.className='crate';c.textContent='🎁';var x=40+Math.random()*(W-80);c.style.left=(x-17)+'px';st.appendChild(c);S.crate={x:x,el:c}}
+hud();clearInterval(S.tm);S.tm=setInterval(tick,100)}
+function tick(){var tot=T0+S.ext,r=tot-(Date.now()-S.t0);$('tm').style.width=Math.max(0,r/tot*100)+'%';if(r<=0&&!S.bul&&!S.lock){clearInterval(S.tm);judge(false,null,true)}}
+function shoot(o){if(S.lock||S.bul)return;S.bul={o:o,x:S.px,y:$('st').clientHeight-100};$('bl').style.display='block';hud()}
+function upd(dt){var st=$('st'),W=st.clientWidth,H=st.clientHeight,w=$('wr');
+if(S.dir){S.px=Math.max(40,Math.min(W-40,S.px+S.dir*240*dt))}w.style.left=(S.px-52)+'px';w.classList.toggle('walk',!!S.dir);
+if(S.lock)return;
+S.tg.forEach(function(o){o.x+=o.vx*dt;if(o.x<0){o.x=0;o.vx=Math.abs(o.vx)}if(o.x>W-o.w){o.x=W-o.w;o.vx=-Math.abs(o.vx)}o.el.style.transform='translate('+o.x+'px,'+o.y+'px)'});
+if(S.crate&&Math.abs(S.px-S.crate.x)<36){S.crate.el.remove();S.crate=null;S.cr+=50;S.ext+=10000;$('feed').textContent='🎁 غنيمة! +50 رصيد و +10 ثوانٍ';hud()}
+var b=S.bul;if(b){var o=b.o,tx=o.x+o.w/2,ty=o.y+o.h/2,dx=tx-b.x,dy=ty-b.y,d=Math.hypot(dx,dy),py=H-76,a=Math.atan2(tx-S.px,-(ty-py))*180/Math.PI;
+$('gun').setAttribute('transform','rotate('+a+' 65 72)');
+if(d<=900*dt+14){S.bul=null;$('bl').style.display='none';judge(o.c,o.el,false)}else{b.x+=dx/d*900*dt;b.y+=dy/d*900*dt;var e=$('bl');e.style.left=(b.x-4)+'px';e.style.top=(b.y-4)+'px'}}}
+function loop(ts){var dt=Math.min(.05,(ts-LT)/1000||0);LT=ts;if(S&&$('s1').classList.contains('on'))upd(dt);requestAnimationFrame(loop)}
+function judge(good,el,to){if(S.lock)return;S.lock=true;clearInterval(S.tm);var q=S.o[S.i],fb=$('fb'),left=Math.max(0,T0+S.ext-(Date.now()-S.t0));S.facts.push(q[7]);
+S.tg.forEach(function(o){o.el.disabled=true;if(o.c)o.el.classList.add('ok');else if(o.el===el)o.el.classList.add('no')});
+var f='<div class="fact">📚 <b>هل تعلم؟</b> '+q[7]+'</div>';
+if(good){S.ok++;S.run++;S.mx=Math.max(S.mx,S.run);S.wr=0;var g=100+Math.floor(left/(T0+S.ext)*50);S.sc+=g;S.cr+=20;
+$('feed').textContent='🎯 إصابة! +'+g+' نقطة و +20 رصيد';fb.className='fb ok';fb.innerHTML='✅ <b>Bravo !</b> '+q[6]+f}
+else{S.wr++;S.run=0;if(S.wr>=5)S.dead=true;$('feed').textContent=to?'⏱️ انتهى الوقت!':'💥 أخطأتَ الهدف!';fb.className='fb no';
+fb.innerHTML=(to?'⏱️ <b>Temps écoulé.</b>':'❌ <b>Raté.</b>')+' الجواب: <b>'+q[2]+'</b><br>'+q[6]+(S.dead?'<br>☠️ <b>5 أخطاء متتالية: تمّ إقصاؤك.</b>':'')+f}
+hud();var nx=$('nx');nx.style.display='block';nx.textContent=(S.dead||S.i==S.o.length-1)?'🏁 عرض النتيجة':'التالي ➡️'}
+function hint(){if(S.lock||S.bul||S.cr<40)return;var w=S.tg.filter(function(o){return !o.c&&!o.el.classList.contains('gone')});if(w.length<2)return;
+sh(w).slice(0,2).forEach(function(o){o.el.classList.add('gone');o.el.disabled=true});S.cr-=40;$('feed').textContent='💡 حُذف هدفان خاطئان';hud()}
+function addT(){if(S.lock||S.bul||S.cr<30)return;S.cr-=30;S.ext+=15000;$('feed').textContent='⏳ +15 ثانية';hud()}
+function next(){if(S.dead||S.i==S.o.length-1)return end();S.i++;load()}
+function end(){var n=S.i+1;scr(2);$('ic').textContent=S.dead?'☠️':'🏆';$('ti').textContent=S.dead?'تمّ إقصاؤك: 5 أخطاء متتالية':'مهمّة ناجحة أيّها المحارب!';
+$('rs').textContent=S.sc;$('rc2').textContent=S.cr;$('ro').textContent=S.ok+' / '+n;$('rm').textContent=S.mx;
+$('lf').innerHTML=S.facts.map(function(f){return'<li>'+f+'</li>'}).join('');
+var m='المدرسة العتيقة: المحارب - '+S.n+' | النقاط '+S.sc+' | إجابات صحيحة '+S.ok+'/'+n+' | الرصيد '+S.cr+(S.dead?' | مُقصى':' | أنهى المهمّة');$('sm').value=m;$('cpm').textContent='';
+try{var b=parseInt(localStorage.getItem('rw3')||'0')||0;if(S.sc>b)localStorage.setItem('rw3',String(S.sc))}catch(e){}bestShow()}
+function cp(){var t=$('sm');t.select();var ok=false;try{ok=document.execCommand('copy')}catch(e){}
+if(!ok&&navigator.clipboard){navigator.clipboard.writeText(t.value).then(function(){$('cpm').textContent='✅ تمّ النسخ'},function(){$('cpm').textContent='انسخ النصّ يدويا من المربّع أعلاه'});return}
+$('cpm').textContent=ok?'✅ تمّ النسخ':'انسخ النصّ يدويا من المربّع أعلاه'}
+function hold(id,d){var b=$(id);['pointerdown'].forEach(function(e){b.addEventListener(e,function(ev){ev.preventDefault();if(S)S.dir=d})});['pointerup','pointerleave','pointercancel'].forEach(function(e){b.addEventListener(e,function(){if(S&&S.dir==d)S.dir=0})})}
+hold('bl_',-1);hold('br_',1);
+document.addEventListener('keydown',function(e){if(!S)return;var k=e.key;if(k=='ArrowLeft'||k=='a'||k=='A'){S.dir=-1}else if(k=='ArrowRight'||k=='d'||k=='D'){S.dir=1}});
+document.addEventListener('keyup',function(e){if(!S)return;var k=e.key;if(['ArrowLeft','a','A','ArrowRight','d','D'].indexOf(k)>-1)S.dir=0});
+bestShow();requestAnimationFrame(loop);
+</script></body></html>
